@@ -22,18 +22,19 @@ function summonersIdsList(summonersIds) {
 }
 
 function getRecentGames(summonerId, callback) {
+  let summonersIds = [];
   lolClient.getRecentGamesForSummoner(region, summonerId)
   .then(({games}) => {
     console.log('fetched games for:', summonerId);
-    let summonersIds = games
+    summonersIds = games
       .filter(game => (game && true) || false)
       .reduce((acc, game) => {
         let playersIds = game.fellowPlayers.map(player => player.summonerId);
         acc.splice(0, 0, ...playersIds);
         return acc;
       }, []);
-    callback(null, summonersIds);
-  }).catch(console.error);;
+  }).catch(console.error)
+  .then(() => callback(null, summonersIds));
 }
 
 
@@ -52,8 +53,8 @@ let summonersQueue = async.queue(({summonersIds}, callback) => {
     for (let summoner of summoners) {
       recentGamesQueue.push({summonerId: summoner.summonerId});
     }
-    callback(null);
-  }).catch(console.error);
+  }).catch(console.error)
+  .then(() => callback(null));
 }, 5);
 let recentGamesQueue = async.queue(({summonerId}, callback) => {
   getRecentGames(summonerId, (err, summonersIds) => {
