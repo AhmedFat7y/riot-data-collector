@@ -9,7 +9,6 @@ module.exports = class MongoCache {
   get({key, region}, callback) {
     var answer, cacheEntry;
     KVStore.findOne({key, region}).lean().exec((err,doc) => {
-      
       callback(err, doc && doc.value);
     });
   }
@@ -18,7 +17,7 @@ module.exports = class MongoCache {
     KVStore.create({
       key, region, value
     }, (err, doc) => {
-      console.log('Cached object:', key, region);
+      // console.log('Cached object:', key, region);
     });
   }
 }
