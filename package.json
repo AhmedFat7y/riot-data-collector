@@ -1,0 +1,24 @@
+{
+  "name": "riot-data-collector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhmedFat7y/riot-data-collector.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AhmedFat7y/riot-data-collector/issues"
+  },
+  "homepage": "https://github.com/AhmedFat7y/riot-data-collector#readme",
+  "dependencies": {
+    "async": "^2.3.0",
+    "dotenv": "^4.0.0",
+    "lol-js": "^2.0.2"
+  }
+}
