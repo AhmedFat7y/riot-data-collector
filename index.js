@@ -50,25 +50,41 @@ let summonersQueue = async.queue(({summonersIds}, callback) => {
       .filter(summoner => (summoner && true) || false);
     summoners.forEach(summoner => summoner.summonerId = summoner.id);
     mongoQueue.push({summoners});
-    for (let summoner of summoners) {
-      recentGamesQueue.push({summonerId: summoner.summonerId});
-    }
+    recentGamesQueue.push(summoners.map(summoner => ({summonerId: summoner.summonerId})));
   }).catch(console.error)
   .then(() => callback(null));
 }, 5);
+summonersQueue.drain = (err) => {
+  if (err) {
+    console.error('recentGamesQueue', err);
+  }
+  console.log('FetchedAllSummoners');
+}
 let recentGamesQueue = async.queue(({summonerId}, callback) => {
   getRecentGames(summonerId, (err, summonersIds) => {
     summonersQueue.push(summonersIdsList(summonersIds));
+    callback(null);
   });
 }, 5);
-
+recentGamesQueue.drain = (err) => {
+  if (err) {
+    console.error('recentGamesQueue', err);
+  }
+  console.log('FetchedAllRecentGames');
+}
 lolClient.getSummonersByName(region, seedData, (err, summonersObj) => {
   let summoners = Object.keys(summonersObj)
     .map(key => summonersObj[key])
     .filter(summoner => (summoner && true) || false);
   summoners.forEach(summoner => summoner.summonerId = summoner.id);
   mongoQueue.push({summoners});
-  for (let summoner of summoners) {
-    recentGamesQueue.push({summonerId: summoner.summonerId});
-  }
+  recentGamesQueue.push(summoners.map(summoner => ({summonerId: summoner.summonerId})));
 });
+
+
+// setInterval(() => {
+//   console.log('recentGamesQueue:', recentGamesQueue._tasks.length);
+//   console.log('mongoQueue:', mongoQueue._tasks.length);
+//   console.log('summonersQueue:', summonersQueue._tasks.length);
+//   // debugger;
+// }, 1000);
