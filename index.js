@@ -27,7 +27,7 @@ function getRecentGames(summonerId, callback) {
   .then(({games}) => {
     console.log('fetched games for:', summonerId);
     summonersIds = games
-      .filter(game => (game && true) || false)
+      .filter(game => (game && game.fellowPlayers && true) || false)
       .reduce((acc, game) => {
         let playersIds = game.fellowPlayers.map(player => player.summonerId);
         acc.splice(0, 0, ...playersIds);
