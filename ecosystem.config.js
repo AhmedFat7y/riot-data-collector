@@ -8,7 +8,7 @@ module.exports = {
     // First application
     {
       name: "riot-data-collector",
-      script: "index",
+      script: "index.js",
       node_args: "-r dotenv/config",
       env: {
         COMMON_VARIABLE: "true"
