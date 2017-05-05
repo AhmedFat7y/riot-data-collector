@@ -5,11 +5,11 @@ const async = require('async');
 module.exports = class Repo {
   saveSummoners(summonersData, callback) {
     let self = this;
-    async.each(summonersData, (summoner, eachCallback) => {
-      self.saveSummoner(summoner, eachCallback);
-    }, err => {
-      console.log('Saved Summoners:', summonersData.length);
-      callback(err);
+    Summoner.insertMany(summonersData, {ordered: false}, (err, docs) => {
+      if(err) {
+        console.error('Error Saving Summoners:', err);
+      }
+      callback(null);
     });
   }
   saveSummoner(summonerData, callback) {
