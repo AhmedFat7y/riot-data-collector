@@ -7,6 +7,9 @@ module.exports = class Repo {
     let self = this;
     Summoner.insertMany(summonersData, {ordered: false}, (err, docs) => {
       if(err) {
+        err = err
+        .filter(error => error.code !== 11000)
+        .map(error => error.toJSON());
         console.error('Error Saving Summoners:', err);
       }
       callback(null);
