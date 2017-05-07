@@ -8,7 +8,7 @@ module.exports = class MongoCache {
 
   get({key, region}, callback) {
     var answer, cacheEntry;
-    KVStore.findOne({key, region}).lean().exec((err,doc) => {
+    KVStore.findOne({key}).lean().exec((err,doc) => {
       callback(err, doc && doc.value);
     });
   }
