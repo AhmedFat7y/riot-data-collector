@@ -4,7 +4,7 @@ let mongoose = db.connect();
 
 function createSchema() {
   return new mongoose.Schema({
-    key: {type: String, index: true},
+    key: {type: String, index: true, unique: true},
     region: {type: String},
     value: {type: Object},
   }, {autoIndex: false});
